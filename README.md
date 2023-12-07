@@ -1,41 +1,33 @@
-# project-dysrup-front
 
-This template should help get you started developing with Vue 3 in Vite.
+# Font Dysrup API
 
-## Recommended IDE Setup
+  
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Este projeto de fontend da API de teste da Dysrup. Ele foi desenvolvido utilizando as seguintes tecnologias.
 
-## Customize configuration
+ - Vue.js (versão 3.3.10)
+ - Axios (1.6.2)
+ - Headlessui (1.7.16)
+ - TailwindCSS (3.3.6)
+ - Node.js (versão v20.5.0)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+  
 
-## Project Setup
+## Instalação
 
-```sh
-npm install
+  
+
+```bash
+
+$  npm  install
+
 ```
 
-### Compile and Hot-Reload for Development
+  
+## Rodando a Aplicação
+Apos os serviços da API (Backend) estarem em funcionamento é só iniciar a aplicação.
+  
 
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+```bash
+# development
+$  npm  run  dev

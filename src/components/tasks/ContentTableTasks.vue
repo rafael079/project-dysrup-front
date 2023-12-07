@@ -29,10 +29,20 @@ const finishCreate = () => {
 const getGetTasks = () => {
   isLoading.value = true
 
-  ApiTasks.index(route.params.projectId).then((response) => {
-    project.value = response.data
-    isLoading.value = false
-  })
+  ApiTasks.index(route.params.projectId)
+    .then((response) => {
+      project.value = response.data
+      isLoading.value = false
+    })
+    .catch(function (error) {
+      isLoading.value = false
+
+      if (error.response) {
+        messageError.value = error.response.data
+      } else {
+        messageError.value = error
+      }
+    })
 }
 
 const deleteTasks = (taskId) => {
@@ -45,8 +55,13 @@ const deleteTasks = (taskId) => {
       getGetTasks()
     })
     .catch(function (error) {
-      messageError.value = error.response.data
       isLoading.value = false
+
+      if (error.response) {
+        messageError.value = error.response.data
+      } else {
+        messageError.value = error
+      }
     })
 }
 
@@ -58,8 +73,13 @@ const completeTask = (taskId) => {
       getGetTasks()
     })
     .catch(function (error) {
-      messageError.value = error.response.data
       isLoading.value = false
+
+      if (error.response) {
+        messageError.value = error.response.data
+      } else {
+        messageError.value = error
+      }
     })
 }
 
@@ -167,16 +187,23 @@ onMounted(() => getGetTasks())
                   </td>
                   <td class="pl-4">
                     <div class="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        class="h-5 w-5 text-indigo-300"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"
-                        />
-                      </svg>
+                      <div class="group relative w-7">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          class="h-5 w-5 text-indigo-400"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"
+                          />
+                        </svg>
+                        <span
+                          class="pointer-events-none absolute text-xs font-normal text-justify z-20 -top-7 left-0 w-52 whitespace-break-spaces bg-white border border-gray-200 p-3 rounded overflow-clip break-all shadow-sm opacity-0 transition-opacity group-hover:opacity-100"
+                        >
+                          {{ project.description }}
+                        </span>
+                      </div>
                       <small class="text-xs leading-none truncate w-44 text-gray-600 ml-2">
                         {{ task.description }}
                       </small>
@@ -207,7 +234,7 @@ onMounted(() => getGetTasks())
                     </div>
                   </td>
 
-                  <td>
+                  <td class="text-right pe-5">
                     <button
                       v-if="!task.is_completed"
                       @click="completeTask(task.id)"

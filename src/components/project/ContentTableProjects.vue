@@ -11,7 +11,7 @@ import { RouterLink } from 'vue-router'
 const projects = ref([])
 const isLoading = ref(false)
 const openCreateModal = ref(false)
-const messageError = ref([])
+const messageError = ref(null)
 
 const closeCreateModal = () => (openCreateModal.value = false)
 
@@ -29,8 +29,13 @@ const getProjects = () => {
       isLoading.value = false
     })
     .catch(function (error) {
-      messageError.value = error.response.data
       isLoading.value = false
+
+      if (error.response) {
+        messageError.value = error.response.data
+      } else {
+        messageError.value = error
+      }
     })
 }
 
@@ -39,7 +44,11 @@ onMounted(() => getProjects())
 <template>
   <div>
     <!-- alertas -->
-    <AlertMessages v-if="messageError.length > 0" :message="messageError.message" type="error" />
+    <AlertMessages
+      v-if="messageError"
+      :message="messageError.message ?? messageError.error"
+      type="error"
+    />
     <!-- alertas -->
 
     <!-- modal -->
@@ -102,7 +111,9 @@ onMounted(() => getProjects())
                   <td class="">
                     <div class="flex items-center pl-5">
                       <p class="text-base font-semibold leading-none text-gray-700 mr-2">
-                        {{ project.name }}
+                        <RouterLink :to="'/tasks/project/' + project.id" class="hover:underline">
+                          {{ project.name }}
+                        </RouterLink>
                       </p>
                     </div>
                   </td>
@@ -157,7 +168,7 @@ onMounted(() => getProjects())
                       </p>
                     </div>
                   </td>
-                  <td class="pl-4">
+                  <td class="text-right pe-5">
                     <RouterLink
                       :to="'/tasks/project/' + project.id"
                       class="focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 text-xs font-semibold leading-none text-gray-600 py-2.5 px-5 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none"

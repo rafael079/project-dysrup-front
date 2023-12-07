@@ -31,8 +31,13 @@ const create = async () => {
       isLoading.value = false
     })
     .catch(function (error) {
-      messageError.value = error.response.data
       isLoading.value = false
+
+      if (error.response) {
+        messageError.value = error.response.data
+      } else {
+        messageError.value = error
+      }
     })
 }
 </script>
